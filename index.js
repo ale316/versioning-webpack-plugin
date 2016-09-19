@@ -6,7 +6,7 @@ const mkdirp = require('mkdirp')
 function Versioning(options) {
     const defaultOpts = {
         cleanup: true,
-        basePath: './',
+        basePath: '',
         manifestFilename: 'manifest.json'
     }
     this.options = Object.assign({}, defaultOpts, options)
@@ -17,7 +17,7 @@ Versioning.prototype.updateVersions = function(chunks) {
     const promises = []
     const versions = chunks.reduce((versions, chunk) => {
         if (chunk.rendered) {
-            versions.new[chunk.name] = chunk.files[0]
+            versions.new[this.options.basePath+chunk.name] = chunk.files[0]
             if (chunk.name in this.versions)
                 versions.filesToRemove.push(`${this.outputPath}/${this.versions[chunk.name]}`)
         }
