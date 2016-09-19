@@ -1,0 +1,29 @@
+{
+  "name": "webpack-versioning",
+  "version": "0.1.0",
+  "description": "Webpack plugin to perform file versioning using a manifest.json",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ale316/webpack-versioning.git"
+  },
+  "keywords": [
+    "versioning",
+    "webpack",
+    "manifest",
+    "hashing",
+    "caching"
+  ],
+  "author": "Alessandro Marin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ale316/webpack-versioning/issues"
+  },
+  "homepage": "https://github.com/ale316/webpack-versioning#readme",
+  "dependencies": {
+    "q": "^1.4.1"
+  }
+}
