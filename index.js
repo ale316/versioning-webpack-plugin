@@ -56,11 +56,11 @@ Versioning.prototype.cleanup = function(files) {
 
 Versioning.prototype.apply = function(compiler) {
     compiler.plugin('emit', (compilation, callback) => {
-        this.outputPath = compiler.options.output.path
+        this.outputPath = `${compiler.context}/${compiler.options.output.path}`
         const previousManifest = `${this.outputPath}/${this.options.manifestFilename}`
         fs.stat(previousManifest, (err, stats) => {
             if (stats && stats.isFile()) {
-                this.versions = require('./'+previousManifest)
+                this.versions = require(previousManifest)
             }
             this.updateVersions(compilation.chunks)
             .then((results) => callback())
