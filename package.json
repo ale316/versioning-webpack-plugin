@@ -1,5 +1,5 @@
 {
-  "name": "webpack-versioning",
+  "name": "versioning-webpack-plugin",
   "version": "0.1.0",
   "description": "Webpack plugin to perform file versioning using a manifest.json",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ale316/webpack-versioning.git"
+    "url": "git+https://github.com/ale316/versioning-webpack-plugin.git"
   },
   "keywords": [
     "versioning",
@@ -20,9 +20,9 @@
   "author": "Alessandro Marin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ale316/webpack-versioning/issues"
+    "url": "https://github.com/ale316/versioning-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/ale316/webpack-versioning#readme",
+  "homepage": "https://github.com/ale316/versioning-webpack-plugin#readme",
   "dependencies": {
     "q": "^1.4.1"
   }
