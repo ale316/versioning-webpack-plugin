@@ -3,6 +3,9 @@ Webpack plugin that performs versioning using a `manifest.json` file for storing
 
 This plugin cleans after itself by removing old manifest files when `cleanup: true` in the options. 
 
+# Installation
+To install run `npm i versioning-webpack-plugin --save-dev`
+
 # Usage
 ```javascript
 const VersioningPlugin = require('versioning-webpack-plugin')
