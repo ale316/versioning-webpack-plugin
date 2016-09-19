@@ -1,6 +1,6 @@
 {
   "name": "versioning-webpack-plugin",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Webpack plugin to perform file versioning using a manifest.json",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ale316/versioning-webpack-plugin#readme",
   "dependencies": {
+    "mkdirp": "^0.5.1",
     "q": "^1.4.1"
   }
 }

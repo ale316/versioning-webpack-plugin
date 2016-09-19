@@ -1,5 +1,7 @@
 const fs = require('fs')
 const Q = require('q')
+const path = require('path')
+const mkdirp = require('mkdirp')
 
 function Versioning(options) {
     const defaultOpts = {
@@ -27,9 +29,10 @@ Versioning.prototype.updateVersions = function(chunks) {
     if (Object.keys(versions.new).length > 0) {
         this.versions = Object.assign({}, this.versions, versions.new)
 
-        const outputFilename = `${this.outputPath}/${this.options.manifestFilename}`
+        const outputFilename = path.join(this.outputPath, this.options.manifestFilename)
         const writeManifestPromise = Q.defer()
-        fs.writeFile(outputFilename, JSON.stringify(this.versions, null, 4), function() {
+        fs.writeFile(outputFilename, JSON.stringify(this.versions, null, 4), function(err) {
+            if (err) throw err
             writeManifestPromise.resolve()
         })
         promises.push(writeManifestPromise)
@@ -57,13 +60,16 @@ Versioning.prototype.cleanup = function(files) {
 Versioning.prototype.apply = function(compiler) {
     compiler.plugin('emit', (compilation, callback) => {
         this.outputPath = `${compiler.context}/${compiler.options.output.path}`
-        const previousManifest = `${this.outputPath}/${this.options.manifestFilename}`
-        fs.stat(previousManifest, (err, stats) => {
-            if (stats && stats.isFile()) {
-                this.versions = require(previousManifest)
-            }
-            this.updateVersions(compilation.chunks)
-            .then((results) => callback())
+        const previousManifest = path.join(this.outputPath, this.options.manifestFilename)
+        mkdirp(this.outputPath, (err) => {
+            if (err) throw err
+            fs.stat(previousManifest, (err, stats) => {
+                if (stats && stats.isFile()) {
+                    this.versions = require(previousManifest)
+                }
+                this.updateVersions(compilation.chunks)
+                .then((results) => callback())
+            })
         })
     })
 }
