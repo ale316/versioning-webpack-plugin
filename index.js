@@ -7,7 +7,7 @@ function Versioning(options) {
     const defaultOpts = {
         cleanup: true,
         basePath: '',
-        manifestFilename: 'manifest.json'
+        manifestPath: path.join(__dirname, 'manifest.json')
     }
     this.options = Object.assign({}, defaultOpts, options)
     this.versions = {}
@@ -29,9 +29,8 @@ Versioning.prototype.updateVersions = function(chunks) {
     if (Object.keys(versions.new).length > 0) {
         this.versions = Object.assign({}, this.versions, versions.new)
 
-        const outputFilename = path.join(this.outputPath, this.options.manifestFilename)
         const writeManifestPromise = Q.defer()
-        fs.writeFile(outputFilename, JSON.stringify(this.versions, null, 4), function(err) {
+        fs.writeFile(this.options.manifestPath, JSON.stringify(this.versions, null, 4), function(err) {
             if (err) throw err
             writeManifestPromise.resolve()
         })
@@ -60,7 +59,7 @@ Versioning.prototype.cleanup = function(files) {
 Versioning.prototype.apply = function(compiler) {
     compiler.plugin('emit', (compilation, callback) => {
         this.outputPath = `${compiler.context}/${compiler.options.output.path}`
-        const previousManifest = path.join(this.outputPath, this.options.manifestFilename)
+        const previousManifest = path.join(this.outputPath, this.options.manifestPath)
         mkdirp(this.outputPath, (err) => {
             if (err) throw err
             fs.stat(previousManifest, (err, stats) => {
