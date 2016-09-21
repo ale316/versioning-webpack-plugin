@@ -60,7 +60,7 @@ Versioning.prototype.apply = function(compiler) {
     compiler.plugin('emit', (compilation, callback) => {
         this.outputPath = `${compiler.context}/${compiler.options.output.path}`
         const previousManifest = path.join(this.outputPath, this.options.manifestPath)
-        mkdirp(this.outputPath, (err) => {
+        mkdirp(path.dirname(this.options.manifestPath), (err) => {
             if (err) throw err
             fs.stat(previousManifest, (err, stats) => {
                 if (stats && stats.isFile()) {
