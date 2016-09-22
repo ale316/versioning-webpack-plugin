@@ -27,7 +27,9 @@ Versioning.prototype.updateVersions = function(chunks) {
         filesToRemove: []
     })
     if (Object.keys(versions.new).length > 0) {
+        // console.log(this.versions)
         this.versions = Object.assign({}, this.versions, versions.new)
+        // console.log(this.versions)
 
         const writeManifestPromise = Q.defer()
         fs.writeFile(this.options.manifestPath, JSON.stringify(this.versions, null, 4), function(err) {
@@ -58,13 +60,15 @@ Versioning.prototype.cleanup = function(files) {
 
 Versioning.prototype.apply = function(compiler) {
     compiler.plugin('emit', (compilation, callback) => {
-        this.outputPath = `${compiler.context}/${compiler.options.output.path}`
-        const previousManifest = path.join(this.outputPath, this.options.manifestPath)
+        console.log("we are here again", compiler.context, this.options.manifestPath)
+        this.outputPath = compiler.options.output.path
+        this.previousManifest = this.options.manifestPath
         mkdirp(path.dirname(this.options.manifestPath), (err) => {
             if (err) throw err
-            fs.stat(previousManifest, (err, stats) => {
+            fs.stat(this.previousManifest, (err, stats) => {
                 if (stats && stats.isFile()) {
-                    this.versions = require(previousManifest)
+                    delete require.cache[this.previousManifest]
+                    this.versions = require(this.previousManifest)
                 }
                 this.updateVersions(compilation.chunks)
                 .then((results) => callback())
