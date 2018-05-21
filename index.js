@@ -17,10 +17,12 @@ Versioning.prototype.updateVersions = function(chunks) {
     const promises = []
     const versions = chunks.reduce((versions, chunk) => {
         if (chunk.rendered) {
-            versions.new[this.options.basePath+chunk.name] = this.options.basePath+chunk.files[0]
+            const [mainFile, ...otherFiles] = chunk.files;
+            const extensions = otherFiles.map(file => `.${file.split('.').pop()}`).concat(['']);
+            versions.new[this.options.basePath+chunk.name] = `${this.options.basePath}${chunk.files[0]}`;
             if (chunk.name in this.versions) {
-                versions.filesToRemove.push(`${this.outputPath}/${this.versions[chunk.name]}`)
-                versions.filesToRemove.push(`${this.outputPath}/${this.versions[chunk.name]}.map`);
+                const filenames = extensions.map(e => `${this.outputPath}/${this.versions[chunk.name]}${e}`);
+                versions.filesToRemove = versions.filesToRemove.concat(filenames);
             }
         }
         return versions
